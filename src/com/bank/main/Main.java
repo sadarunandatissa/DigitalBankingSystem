@@ -38,5 +38,6 @@ if (BankData.getInstance().getCustomer("testuser") == null) {
 }
         // Launch GUI
         new LoginFrame().setVisible(true);
+        BankConsole.main(args);
     }
 }

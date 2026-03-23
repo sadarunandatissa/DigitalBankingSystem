@@ -43,7 +43,7 @@ public abstract class Account implements Serializable {
         addTransaction(new Transaction("WITHDRAWAL", amount, this));
     }
 
-    protected void addTransaction(Transaction t) {
+    public void addTransaction(Transaction t) {
         transactions.add(t);
     }
 
