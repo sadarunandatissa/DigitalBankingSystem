@@ -13,9 +13,19 @@ public class Customer extends User {
         this.transactions = new ArrayList<>();
     }
 
-    public List<Account> getAccounts() { return accounts; }
-    public void addAccount(Account account) { accounts.add(account); }
+    public List<Account> getAccounts() {
+        return accounts;
+    }
 
-    public List<Transaction> getTransactions() { return transactions; }
-    public void addTransaction(Transaction t) { transactions.add(t); }
+    public void addAccount(Account account) {
+        accounts.add(account);
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void addTransaction(Transaction t) {
+        transactions.add(t);
+    }
 }

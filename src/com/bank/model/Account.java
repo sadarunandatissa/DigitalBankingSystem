@@ -16,18 +16,29 @@ public abstract class Account implements Serializable {
         this.transactions = new ArrayList<>();
     }
 
-    public String getAccountNumber() { return accountNumber; }
-    public double getBalance() { return balance; }
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
 
     public void deposit(double amount) {
-        if (amount <= 0) throw new IllegalArgumentException("Amount must be positive");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be positive.");
+        }
         balance += amount;
         addTransaction(new Transaction("DEPOSIT", amount, this));
     }
 
     public void withdraw(double amount) throws Exception {
-        if (amount <= 0) throw new IllegalArgumentException("Amount must be positive");
-        if (amount > balance) throw new Exception("Insufficient funds");
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Withdrawal amount must be positive.");
+        }
+        if (amount > balance) {
+            throw new Exception("Insufficient funds.");
+        }
         balance -= amount;
         addTransaction(new Transaction("WITHDRAWAL", amount, this));
     }
@@ -36,7 +47,10 @@ public abstract class Account implements Serializable {
         transactions.add(t);
     }
 
+    // Abstract method for interest calculation (to be implemented by subclasses)
     public abstract double calculateInterest();
 
-    public List<Transaction> getTransactions() { return transactions; }
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
 }
