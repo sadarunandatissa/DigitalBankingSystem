@@ -1,12 +1,10 @@
 package com.bank.main;
 
-import com.bank.model.Customer;
-import com.bank.model.SavingsAccount;
-import com.bank.ui.LoginFrame;
 import com.bank.util.BankData;
 
 public class Main {
     public static void main(String[] args) {
+        // Load data once
         try {
             BankData.getInstance().loadData();
             System.out.println("Data loaded successfully.");
@@ -14,7 +12,7 @@ public class Main {
             System.out.println("No existing data found, starting fresh.");
         }
 
-        // Add a shutdown hook to save data when the program exits
+        // Shutdown hook to save data
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 BankData.getInstance().saveData();
@@ -24,20 +22,7 @@ public class Main {
             }
         }));
 
-        // For testing: create a test customer if none exists
-if (BankData.getInstance().getCustomer("testuser") == null) {
-    try {
-        Customer test = new Customer("testuser", "pass123");
-        SavingsAccount testAcc = new SavingsAccount(1000);
-        test.addAccount(testAcc);
-        BankData.getInstance().addCustomer(test);
-        System.out.println("Test customer created.");
-    } catch (Exception e) {
-        System.out.println("Error creating test customer: " + e.getMessage());
-    }
-}
-        // Launch GUI
-        new LoginFrame().setVisible(true);
-        BankConsole.main(args);
+        // Launch the new login manager (console-based for now)
+        LoginManager.main(args);
     }
 }

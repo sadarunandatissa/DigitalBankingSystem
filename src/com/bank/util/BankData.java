@@ -37,7 +37,7 @@ public class BankData {
         return c != null && c.getPassword().equals(password);
     }
 
-    // Staff operations (simplified for now)
+    // Staff operations
     public void addStaff(Staff s) {
         staff.put(s.getUsername(), s);
     }
@@ -51,7 +51,7 @@ public class BankData {
         return s != null && s.getPassword().equals(password);
     }
 
-    // Admin operations (simplified)
+    // Admin operations
     public void addAdmin(Admin a) {
         admins.put(a.getUsername(), a);
     }
@@ -65,9 +65,13 @@ public class BankData {
         return a != null && a.getPassword().equals(password);
     }
 
+    // Get all customers (used by staff for loan approval)
+    public Collection<Customer> getAllCustomers() {
+        return customers.values();
+    }
+
     // Persistence
     public void saveData() throws IOException {
-        // Ensure data folder exists
         File dataDir = new File("data");
         if (!dataDir.exists()) {
             dataDir.mkdir();
