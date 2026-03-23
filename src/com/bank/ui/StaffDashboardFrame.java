@@ -6,15 +6,12 @@ import com.bank.util.BankData;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.Collection;
 
 public class StaffDashboardFrame extends JFrame {
     private Staff staff;
     private BankData bankData = BankData.getInstance();
     private JTabbedPane tabbedPane;
-
-    // Tables
     private DefaultTableModel customerTableModel;
     private DefaultTableModel pendingLoanTableModel;
     private JTextArea logArea;
@@ -26,8 +23,16 @@ public class StaffDashboardFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        tabbedPane = new JTabbedPane();
+        // --- Logout menu ---
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem logoutItem = new JMenuItem("Logout");
+        logoutItem.addActionListener(e -> logout());
+        fileMenu.add(logoutItem);
+        menuBar.add(fileMenu);
+        setJMenuBar(menuBar);
 
+        tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Customers", createCustomersPanel());
         tabbedPane.addTab("Pending Loans", createPendingLoansPanel());
         tabbedPane.addTab("Activity Logs", createLogsPanel());
@@ -38,35 +43,28 @@ public class StaffDashboardFrame extends JFrame {
 
     private JPanel createCustomersPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
         customerTableModel = new DefaultTableModel(new String[]{"Username", "Accounts", "Loans", "Bills"}, 0);
         JTable table = new JTable(customerTableModel);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
-
         JButton refreshBtn = new JButton("Refresh");
         refreshBtn.addActionListener(e -> refreshCustomers());
         panel.add(refreshBtn, BorderLayout.SOUTH);
-
         return panel;
     }
 
     private JPanel createPendingLoansPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
         pendingLoanTableModel = new DefaultTableModel(new String[]{"Loan ID", "Customer", "Amount", "Rate", "Term", "Status"}, 0);
         JTable table = new JTable(pendingLoanTableModel);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
-
         JPanel buttonPanel = new JPanel();
         JButton approveBtn = new JButton("Approve Selected");
         JButton rejectBtn = new JButton("Reject Selected");
         buttonPanel.add(approveBtn);
         buttonPanel.add(rejectBtn);
         panel.add(buttonPanel, BorderLayout.SOUTH);
-
         approveBtn.addActionListener(e -> approveLoan(table.getSelectedRow()));
         rejectBtn.addActionListener(e -> rejectLoan(table.getSelectedRow()));
-
         return panel;
     }
 
@@ -91,12 +89,7 @@ public class StaffDashboardFrame extends JFrame {
         customerTableModel.setRowCount(0);
         Collection<Customer> customers = bankData.getAllCustomers();
         for (Customer c : customers) {
-            customerTableModel.addRow(new Object[]{
-                c.getUsername(),
-                c.getAccounts().size(),
-                c.getLoans().size(),
-                c.getBills().size()
-            });
+            customerTableModel.addRow(new Object[]{c.getUsername(), c.getAccounts().size(), c.getLoans().size(), c.getBills().size()});
         }
     }
 
@@ -107,12 +100,7 @@ public class StaffDashboardFrame extends JFrame {
             for (Loan loan : c.getLoans()) {
                 if (loan.getStatus().equals("PENDING")) {
                     pendingLoanTableModel.addRow(new Object[]{
-                        loan.getLoanId(),
-                        c.getUsername(),
-                        loan.getAmount(),
-                        loan.getInterestRate(),
-                        loan.getTermMonths(),
-                        loan.getStatus()
+                        loan.getLoanId(), c.getUsername(), loan.getAmount(), loan.getInterestRate(), loan.getTermMonths(), loan.getStatus()
                     });
                 }
             }
@@ -139,7 +127,6 @@ public class StaffDashboardFrame extends JFrame {
             return;
         }
         String loanId = (String) pendingLoanTableModel.getValueAt(row, 0);
-        // Find the loan object
         Collection<Customer> customers = bankData.getAllCustomers();
         for (Customer c : customers) {
             for (Loan loan : c.getLoans()) {
@@ -172,5 +159,13 @@ public class StaffDashboardFrame extends JFrame {
             }
         }
         JOptionPane.showMessageDialog(this, "Loan not found or already processed.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void logout() {
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            dispose();
+            new LoginFrame().setVisible(true);
+        }
     }
 }

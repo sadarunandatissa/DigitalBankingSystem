@@ -5,15 +5,11 @@ import com.bank.util.BankData;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Collection;
 
 public class AdminDashboardFrame extends JFrame {
     private Admin admin;
     private BankData bankData = BankData.getInstance();
     private JTabbedPane tabbedPane;
-
-    // Tables
     private DefaultTableModel userTableModel;
     private DefaultTableModel reportTableModel;
     private JTextArea logArea;
@@ -25,8 +21,16 @@ public class AdminDashboardFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        tabbedPane = new JTabbedPane();
+        // --- Logout menu ---
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem logoutItem = new JMenuItem("Logout");
+        logoutItem.addActionListener(e -> logout());
+        fileMenu.add(logoutItem);
+        menuBar.add(fileMenu);
+        setJMenuBar(menuBar);
 
+        tabbedPane = new JTabbedPane();
         tabbedPane.addTab("User Management", createUserManagementPanel());
         tabbedPane.addTab("Reports", createReportsPanel());
         tabbedPane.addTab("System Logs", createLogsPanel());
@@ -37,13 +41,10 @@ public class AdminDashboardFrame extends JFrame {
 
     private JPanel createUserManagementPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
-        // Table for users
         userTableModel = new DefaultTableModel(new String[]{"Username", "Role", "Accounts (if customer)", "Loans/Bills"}, 0);
         JTable table = new JTable(userTableModel);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
 
-        // Buttons for adding users
         JPanel buttonPanel = new JPanel();
         JButton addStaffBtn = new JButton("Add Staff");
         JButton addAdminBtn = new JButton("Add Admin");
@@ -62,8 +63,6 @@ public class AdminDashboardFrame extends JFrame {
 
     private JPanel createReportsPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
-        // Dropdown for report type
         JPanel topPanel = new JPanel();
         JLabel reportLabel = new JLabel("Report Type:");
         JComboBox<String> reportType = new JComboBox<>(new String[]{"Customer Transaction Summary", "Loan Performance", "Bill Payment Summary"});
@@ -73,13 +72,11 @@ public class AdminDashboardFrame extends JFrame {
         topPanel.add(generateBtn);
         panel.add(topPanel, BorderLayout.NORTH);
 
-        // Table to display report data
         reportTableModel = new DefaultTableModel();
         JTable table = new JTable(reportTableModel);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
 
         generateBtn.addActionListener(e -> generateReport((String) reportType.getSelectedItem()));
-
         return panel;
     }
 
@@ -105,11 +102,22 @@ public class AdminDashboardFrame extends JFrame {
         for (Customer c : bankData.getAllCustomers()) {
             userTableModel.addRow(new Object[]{c.getUsername(), "Customer", c.getAccounts().size(), c.getLoans().size() + "/" + c.getBills().size()});
         }
-        // Staff - we need a method to get all staff; we'll add a temporary getter in BankData
-        // For now, just add a placeholder message.
-        userTableModel.addRow(new Object[]{"(Staff list requires getAllStaff())", "Staff", "-", "-"});
+        // Staff (requires getAllStaff in BankData; if not available, show placeholder)
+        try {
+            for (Staff s : bankData.getAllStaff()) {
+                userTableModel.addRow(new Object[]{s.getUsername(), "Staff", "-", "-"});
+            }
+        } catch (Exception e) {
+            userTableModel.addRow(new Object[]{"(Staff list requires getAllStaff())", "Staff", "-", "-"});
+        }
         // Admin
-        userTableModel.addRow(new Object[]{"(Admin list requires getAllAdmins())", "Admin", "-", "-"});
+        try {
+            for (Admin a : bankData.getAllAdmins()) {
+                userTableModel.addRow(new Object[]{a.getUsername(), "Admin", "-", "-"});
+            }
+        } catch (Exception e) {
+            userTableModel.addRow(new Object[]{"(Admin list requires getAllAdmins())", "Admin", "-", "-"});
+        }
     }
 
     private void addUser(String role) {
@@ -173,6 +181,14 @@ public class AdminDashboardFrame extends JFrame {
             }
         } catch (Exception e) {
             logArea.setText("Could not read log file: " + e.getMessage());
+        }
+    }
+
+    private void logout() {
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            dispose();
+            new LoginFrame().setVisible(true);
         }
     }
 }

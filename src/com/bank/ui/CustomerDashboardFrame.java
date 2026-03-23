@@ -8,7 +8,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.time.LocalDate;
 
-
 public class CustomerDashboardFrame extends JFrame {
     private Customer customer;
     private JTabbedPane tabbedPane;
@@ -25,32 +24,33 @@ public class CustomerDashboardFrame extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        tabbedPane = new JTabbedPane();
+        // --- Logout menu ---
+        JMenuBar menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem logoutItem = new JMenuItem("Logout");
+        logoutItem.addActionListener(e -> logout());
+        fileMenu.add(logoutItem);
+        menuBar.add(fileMenu);
+        setJMenuBar(menuBar);
 
-        // Accounts tab
+        tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Accounts", createAccountsPanel());
-        // Transactions tab
         tabbedPane.addTab("Transactions", createTransactionsPanel());
-        // Loans tab
         tabbedPane.addTab("Loans", createLoansPanel());
-        // Bills tab
         tabbedPane.addTab("Bills", createBillsPanel());
-        // Notifications tab
         tabbedPane.addTab("Notifications", createNotificationsPanel());
 
         add(tabbedPane);
         refreshAll();
     }
 
+    // ---------- Panel creation ----------
     private JPanel createAccountsPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
-        // Table
         accountTableModel = new DefaultTableModel(new String[]{"Account No.", "Type", "Balance"}, 0);
         JTable table = new JTable(accountTableModel);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
 
-        // Buttons
         JPanel buttonPanel = new JPanel();
         JButton depositBtn = new JButton("Deposit");
         JButton withdrawBtn = new JButton("Withdraw");
@@ -77,33 +77,23 @@ public class CustomerDashboardFrame extends JFrame {
 
     private JPanel createLoansPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
-        // Table
         loanTableModel = new DefaultTableModel(new String[]{"Loan ID", "Amount", "Rate", "Term", "Monthly Payment", "Status"}, 0);
         JTable table = new JTable(loanTableModel);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
-
-        // Apply button
         JButton applyBtn = new JButton("Apply for Loan");
         applyBtn.addActionListener(e -> applyForLoan());
         panel.add(applyBtn, BorderLayout.SOUTH);
-
         return panel;
     }
 
     private JPanel createBillsPanel() {
         JPanel panel = new JPanel(new BorderLayout());
-
-        // Table
         billTableModel = new DefaultTableModel(new String[]{"Bill ID", "Type", "Amount", "Due Date", "Paid"}, 0);
         JTable table = new JTable(billTableModel);
         panel.add(new JScrollPane(table), BorderLayout.CENTER);
-
-        // Pay button
         JButton payBtn = new JButton("Pay Selected Bill");
         payBtn.addActionListener(e -> payBill(table.getSelectedRow()));
         panel.add(payBtn, BorderLayout.SOUTH);
-
         return panel;
     }
 
@@ -118,6 +108,7 @@ public class CustomerDashboardFrame extends JFrame {
         return panel;
     }
 
+    // ---------- Refresh methods ----------
     private void refreshAll() {
         refreshAccounts();
         refreshTransactions();
@@ -181,9 +172,10 @@ public class CustomerDashboardFrame extends JFrame {
         notificationArea.setText(sb.toString());
     }
 
+    // ---------- Operations ----------
     private void deposit() {
-        int selected = JOptionPane.showOptionDialog(this, "Select account:", "Deposit", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-                customer.getAccounts().toArray(), null);
+        Object[] accounts = customer.getAccounts().toArray();
+        int selected = JOptionPane.showOptionDialog(this, "Select account:", "Deposit", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, accounts, null);
         if (selected < 0) return;
         Account acc = customer.getAccounts().get(selected);
         String amountStr = JOptionPane.showInputDialog(this, "Enter amount to deposit:");
@@ -200,8 +192,8 @@ public class CustomerDashboardFrame extends JFrame {
     }
 
     private void withdraw() {
-        int selected = JOptionPane.showOptionDialog(this, "Select account:", "Withdraw", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-                customer.getAccounts().toArray(), null);
+        Object[] accounts = customer.getAccounts().toArray();
+        int selected = JOptionPane.showOptionDialog(this, "Select account:", "Withdraw", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, accounts, null);
         if (selected < 0) return;
         Account acc = customer.getAccounts().get(selected);
         String amountStr = JOptionPane.showInputDialog(this, "Enter amount to withdraw:");
@@ -282,6 +274,15 @@ public class CustomerDashboardFrame extends JFrame {
             refreshAll();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Payment failed: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // ---------- Logout ----------
+    private void logout() {
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            dispose();
+            new LoginFrame().setVisible(true);
         }
     }
 }
