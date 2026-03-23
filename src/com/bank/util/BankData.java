@@ -3,6 +3,10 @@ package com.bank.util;
 import java.io.*;
 import java.util.*;
 
+import com.bank.model.Customer;
+import com.bank.model.Staff;
+import com.bank.model.Admin;
+
 public class BankData {
     private static BankData instance;
     private Map<String, Customer> customers;
@@ -11,8 +15,6 @@ public class BankData {
 
     private BankData() {
         customers = new HashMap<>();
-        staff = new HashMap<>();
-        admins = new HashMap<>();
     }
 
     public static BankData getInstance() {
@@ -22,13 +24,10 @@ public class BankData {
 
     public void addCustomer(Customer c) { customers.put(c.getUsername(), c); }
     public Customer getCustomer(String username) { return customers.get(username); }
-    // similar for staff, admin
 
     public void saveData() throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("data/bankdata.dat"))) {
             oos.writeObject(customers);
-            oos.writeObject(staff);
-            oos.writeObject(admins);
         }
     }
 
@@ -38,8 +37,6 @@ public class BankData {
         if (!f.exists()) return;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f))) {
             customers = (Map<String, Customer>) ois.readObject();
-            staff = (Map<String, Staff>) ois.readObject();
-            admins = (Map<String, Admin>) ois.readObject();
         }
     }
 }
