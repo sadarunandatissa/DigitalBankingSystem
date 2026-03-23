@@ -70,6 +70,14 @@ public class BankData {
         return customers.values();
     }
 
+    public Collection<Staff> getAllStaff() {
+    return staff.values();
+}
+
+public Collection<Admin> getAllAdmins() {
+    return admins.values();
+}
+
     // Persistence
     public void saveData() throws IOException {
         File dataDir = new File("data");

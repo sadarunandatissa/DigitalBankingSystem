@@ -1,10 +1,10 @@
 package com.bank.main;
 
+import com.bank.ui.LoginFrame;
 import com.bank.util.BankData;
 
 public class Main {
     public static void main(String[] args) {
-        // Load data once
         try {
             BankData.getInstance().loadData();
             System.out.println("Data loaded successfully.");
@@ -12,7 +12,7 @@ public class Main {
             System.out.println("No existing data found, starting fresh.");
         }
 
-        // Shutdown hook to save data
+        // Add a shutdown hook to save data when the program exits
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 BankData.getInstance().saveData();
@@ -22,7 +22,7 @@ public class Main {
             }
         }));
 
-        // Launch the new login manager (console-based for now)
-        LoginManager.main(args);
+        // Launch GUI
+        new LoginFrame().setVisible(true);
     }
 }
