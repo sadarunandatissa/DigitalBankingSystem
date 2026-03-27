@@ -6,7 +6,7 @@
       "name": "JavaFX",
       "request": "launch",
       "mainClass": "com.bank.main.JavaFXMain",
-      "vmArgs": "--module-path C:/javafx-sdk-17.0.2/lib --add-modules javafx.controls,javafx.fxml"
+      "vmArgs": "--module-path C:/javafx-sdk-17.0.2/javafx-sdk-17.0.18/lib --add-modules javafx.controls,javafx.fxml"
     }
   ]
 }
