@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <VBox spacing="10" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -14,8 +15,39 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <Label text="Staff Dashboard" style="-fx-font-size: 20px;"/>
-        <TextArea fx:id="logArea" editable="false" />
-        <Button text="Refresh" onAction="#refreshAll"/>
+        <Text text="Staff Dashboard" styleClass="dashboard-title"/>
+        <TabPane>
+            <Tab text="Customers">
+                <TableView fx:id="customersTable">
+                    <columns>
+                        <TableColumn text="Username" fx:id="colUsername"/>
+                        <TableColumn text="Accounts" fx:id="colAccountsCount"/>
+                        <TableColumn text="Loans" fx:id="colLoansCount"/>
+                        <TableColumn text="Bills" fx:id="colBillsCount"/>
+                    </columns>
+                </TableView>
+            </Tab>
+            <Tab text="Pending Loans">
+                <VBox spacing="10">
+                    <TableView fx:id="pendingLoansTable">
+                        <columns>
+                            <TableColumn text="Loan ID" fx:id="colLoanId"/>
+                            <TableColumn text="Customer" fx:id="colLoanCustomer"/>
+                            <TableColumn text="Amount" fx:id="colLoanAmount"/>
+                            <TableColumn text="Rate" fx:id="colLoanRate"/>
+                            <TableColumn text="Term" fx:id="colLoanTerm"/>
+                            <TableColumn text="Status" fx:id="colLoanStatus"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="Approve" onAction="#approveLoan"/>
+                        <Button text="Reject" onAction="#rejectLoan"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+            <Tab text="Activity Logs">
+                <TextArea fx:id="logArea" editable="false"/>
+            </Tab>
+        </TabPane>
     </children>
 </VBox>

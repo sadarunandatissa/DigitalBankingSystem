@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <VBox spacing="10" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -14,8 +15,67 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <Label text="Customer Dashboard" style="-fx-font-size: 20px;"/>
-        <TextArea fx:id="notificationArea" editable="false" />
-        <Button text="Refresh" onAction="#refreshAll"/>
+        <Text text="Customer Dashboard" styleClass="dashboard-title"/>
+        <TabPane fx:id="tabPane">
+            <Tab text="Accounts">
+                <VBox spacing="10">
+                    <TableView fx:id="accountsTable">
+                        <columns>
+                            <TableColumn text="Account No." fx:id="colAccountNo"/>
+                            <TableColumn text="Type" fx:id="colType"/>
+                            <TableColumn text="Balance" fx:id="colBalance"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="Deposit" onAction="#deposit"/>
+                        <Button text="Withdraw" onAction="#withdraw"/>
+                        <Button text="Transfer" onAction="#transfer"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+            <Tab text="Transactions">
+                <TableView fx:id="transactionsTable">
+                    <columns>
+                        <TableColumn text="ID" fx:id="colTransId"/>
+                        <TableColumn text="Type" fx:id="colTransType"/>
+                        <TableColumn text="Amount" fx:id="colTransAmount"/>
+                        <TableColumn text="Date" fx:id="colTransDate"/>
+                        <TableColumn text="Account" fx:id="colTransAccount"/>
+                    </columns>
+                </TableView>
+            </Tab>
+            <Tab text="Loans">
+                <VBox spacing="10">
+                    <TableView fx:id="loansTable">
+                        <columns>
+                            <TableColumn text="Loan ID" fx:id="colLoanId"/>
+                            <TableColumn text="Amount" fx:id="colLoanAmount"/>
+                            <TableColumn text="Rate" fx:id="colLoanRate"/>
+                            <TableColumn text="Term" fx:id="colLoanTerm"/>
+                            <TableColumn text="Monthly" fx:id="colLoanMonthly"/>
+                            <TableColumn text="Status" fx:id="colLoanStatus"/>
+                        </columns>
+                    </TableView>
+                    <Button text="Apply for Loan" onAction="#applyForLoan"/>
+                </VBox>
+            </Tab>
+            <Tab text="Bills">
+                <VBox spacing="10">
+                    <TableView fx:id="billsTable">
+                        <columns>
+                            <TableColumn text="Bill ID" fx:id="colBillId"/>
+                            <TableColumn text="Type" fx:id="colBillType"/>
+                            <TableColumn text="Amount" fx:id="colBillAmount"/>
+                            <TableColumn text="Due Date" fx:id="colBillDue"/>
+                            <TableColumn text="Paid" fx:id="colBillPaid"/>
+                        </columns>
+                    </TableView>
+                    <Button text="Pay Selected Bill" onAction="#payBill"/>
+                </VBox>
+            </Tab>
+            <Tab text="Notifications">
+                <TextArea fx:id="notificationArea" editable="false"/>
+            </Tab>
+        </TabPane>
     </children>
 </VBox>

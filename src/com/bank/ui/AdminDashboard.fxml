@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <VBox spacing="10" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -14,8 +15,41 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <Label text="Admin Dashboard" style="-fx-font-size: 20px;"/>
-        <TextArea fx:id="logArea" editable="false" />
-        <Button text="Refresh" onAction="#refreshAll"/>
+        <Text text="Admin Dashboard" styleClass="dashboard-title"/>
+        <TabPane>
+            <Tab text="User Management">
+                <VBox spacing="10">
+                    <TableView fx:id="usersTable">
+                        <columns>
+                            <TableColumn text="Username" fx:id="colUsername"/>
+                            <TableColumn text="Role" fx:id="colRole"/>
+                            <TableColumn text="Details" fx:id="colDetails"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="10">
+                        <Button text="Add Staff" onAction="#addStaff"/>
+                        <Button text="Add Admin" onAction="#addAdmin"/>
+                        <Button text="Refresh" onAction="#refreshUsers"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+            <Tab text="Reports">
+                <VBox spacing="10">
+                    <HBox spacing="10">
+                        <Label text="Report Type:"/>
+                        <ComboBox fx:id="reportTypeCombo"/>
+                        <Button text="Generate" onAction="#generateReport"/>
+                    </HBox>
+                    <TableView fx:id="reportTable">
+                        <columns>
+                            <TableColumn text="Report Data"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+            <Tab text="System Logs">
+                <TextArea fx:id="logArea" editable="false"/>
+            </Tab>
+        </TabPane>
     </children>
 </VBox>
