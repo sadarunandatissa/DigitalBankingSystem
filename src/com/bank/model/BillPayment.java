@@ -6,7 +6,7 @@ import java.time.LocalDate;
 public class BillPayment implements Serializable {
     private static long nextId = 7001;
     private String billId;
-    private String type;           // "ELECTRICITY", "WATER", "INTERNET", etc.
+    private String type; // ELECTRICITY, WATER, INTERNET
     private double amount;
     private LocalDate dueDate;
     private boolean paid;
@@ -19,7 +19,6 @@ public class BillPayment implements Serializable {
         this.paid = false;
     }
 
-    // Getters and setters
     public String getBillId() { return billId; }
     public String getType() { return type; }
     public double getAmount() { return amount; }

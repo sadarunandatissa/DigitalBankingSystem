@@ -19,7 +19,6 @@ public class Transaction implements Serializable {
         this.accountNumber = account.getAccountNumber();
     }
 
-    // Getters
     public String getTransactionId() { return transactionId; }
     public String getType() { return type; }
     public double getAmount() { return amount; }

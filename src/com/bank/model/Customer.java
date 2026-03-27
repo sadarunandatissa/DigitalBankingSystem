@@ -17,7 +17,6 @@ public class Customer extends User {
         this.bills = new ArrayList<>();
     }
 
-    // Getters and adders
     public List<Account> getAccounts() { return accounts; }
     public void addAccount(Account account) { accounts.add(account); }
 
