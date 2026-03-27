@@ -6,7 +6,6 @@ import com.bank.exception.InsufficientFundsException;
 import com.bank.exception.InvalidAmountException;
 
 public class BankService {
-
     public static void transfer(Account source, Account destination, double amount)
             throws InsufficientFundsException, InvalidAmountException {
         if (amount <= 0) {
@@ -15,7 +14,6 @@ public class BankService {
         try {
             source.withdraw(amount);
             destination.deposit(amount);
-            // Record transfer transactions on both accounts
             source.addTransaction(new Transaction("TRANSFER_OUT", amount, source));
             destination.addTransaction(new Transaction("TRANSFER_IN", amount, destination));
         } catch (Exception e) {
