@@ -5,7 +5,7 @@
 
 <VBox spacing="10" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.bank.ui.CustomerDashboardController">
+      fx:controller="com.bank.ui.AdminDashboardController">
     <children>
         <MenuBar>
             <menus>
@@ -14,8 +14,8 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <Label text="Customer Dashboard" style="-fx-font-size: 20px;"/>
-        <TextArea fx:id="notificationArea" editable="false" />
+        <Label text="Admin Dashboard" style="-fx-font-size: 20px;"/>
+        <TextArea fx:id="logArea" editable="false" />
         <Button text="Refresh" onAction="#refreshAll"/>
     </children>
 </VBox>
