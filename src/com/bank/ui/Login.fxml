@@ -1,0 +1,17 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bank.ui.LoginController">
+    <children>
+        <Text text="Digital Banking System" styleClass="title"/>
+        <TextField fx:id="usernameField" promptText="Username" styleClass="input-field"/>
+        <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field"/>
+        <Button text="Login" onAction="#handleLogin" styleClass="login-button"/>
+        <Label fx:id="errorLabel" styleClass="error-label"/>
+    </children>
+</VBox>
