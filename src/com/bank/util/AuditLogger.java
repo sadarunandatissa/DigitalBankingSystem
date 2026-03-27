@@ -16,7 +16,7 @@ public class AuditLogger {
              PrintWriter pw = new PrintWriter(fw)) {
             pw.println(LocalDateTime.now() + " - " + message);
         } catch (IOException e) {
-            System.err.println("Failed to write to audit log: " + e.getMessage());
+            System.err.println("Failed to write log: " + e.getMessage());
         }
     }
 }
