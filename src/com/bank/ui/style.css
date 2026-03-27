@@ -1,0 +1,36 @@
+.root {
+  -fx-background-color: linear-gradient(to bottom, #2c3e50, #3498db);
+  -fx-padding: 40;
+}
+
+.title {
+  -fx-font-size: 28px;
+  -fx-font-weight: bold;
+  -fx-fill: white;
+}
+
+.input-field {
+  -fx-background-color: white;
+  -fx-background-radius: 5;
+  -fx-pref-width: 250;
+  -fx-padding: 10;
+  -fx-font-size: 14px;
+}
+
+.login-button {
+  -fx-background-color: #e67e22;
+  -fx-text-fill: white;
+  -fx-font-weight: bold;
+  -fx-background-radius: 5;
+  -fx-pref-width: 100;
+  -fx-font-size: 14px;
+}
+
+.login-button:hover {
+  -fx-background-color: #f39c12;
+}
+
+.error-label {
+  -fx-text-fill: #ff6666;
+  -fx-font-size: 12px;
+}
