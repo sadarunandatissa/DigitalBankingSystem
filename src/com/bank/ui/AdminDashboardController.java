@@ -60,13 +60,14 @@ public class AdminDashboardController {
         refreshLogs();
     }
 
-    private void refreshUsers() {
-        ObservableList<User> users = FXCollections.observableArrayList();
-        users.addAll(bankData.getAllCustomers());
-        users.addAll(bankData.getAllStaff());
-        users.addAll(bankData.getAllAdmins());
-        usersTable.setItems(users);
-    }
+   @FXML
+private void refreshUsers() {
+    ObservableList<User> users = FXCollections.observableArrayList();
+    users.addAll(bankData.getAllCustomers());
+    users.addAll(bankData.getAllStaff());
+    users.addAll(bankData.getAllAdmins());
+    usersTable.setItems(users);
+}
 
     private void refreshLogs() {
         try {
